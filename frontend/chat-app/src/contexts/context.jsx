@@ -16,20 +16,23 @@ export const ApiProvider = ({ children }) => {
          const newSocket = io(baseURL, {
             transports: ["websocket"],
             auth: {
-               userId: localStorage.getItem("userId")  
+               userId: localStorage.getItem("userId")
             }
          });
 
          newSocket.on('AllOnlineUSers', (userIds) => {
-            setOnlineUsers(userIds);  
+            setOnlineUsers(userIds);
          });
 
          setSocket(newSocket);
       }
    };
-   useEffect(()=>{
-      connectSocket();
-   },[])
+   useEffect(() => {
+      const userId = localStorage.getItem("userId");
+      if (userId) {
+         connectSocket();
+      }
+   }, []);
    useEffect(() => {
       if (!socket) return;
 
@@ -42,7 +45,7 @@ export const ApiProvider = ({ children }) => {
    /*-----------------------for socket connection------------------------------------*/
 
    return (
-      <ApiContext.Provider value={{ baseURL,socket, connectSocket, onlineUsers }}>
+      <ApiContext.Provider value={{ baseURL, socket, connectSocket, onlineUsers }}>
          {children}
       </ApiContext.Provider>
    )

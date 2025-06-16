@@ -9,6 +9,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<Navigate to="/login" replace />} />
         <Route path='/login' element={<LoginAndSignup/>}/>
         <Route path='/mainPage' element={<ProtectedUI><MainPage/></ProtectedUI>}/>
       </Routes>
