@@ -68,7 +68,6 @@
   right: 1rem;
 }
 
-/* ✅ Responsive for tablets and phones */
 @media (max-width: 768px) {
   .userlist-container {
     width: 100%;

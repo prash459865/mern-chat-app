@@ -5,7 +5,7 @@ const ApiContext = createContext();
 
 export const ApiProvider = ({ children }) => {
 
-   const baseURL = 'http://localhost:5000'
+   const baseURL = 'https://mern-chat-app-r0lj.onrender.com'
    const [socket, setSocket] = useState(null);
    const [onlineUsers, setOnlineUsers] = useState([]);
 
@@ -16,7 +16,7 @@ export const ApiProvider = ({ children }) => {
          const newSocket = io(baseURL, {
             transports: ["websocket"],
             auth: {
-               userId: localStorage.getItem("userId")  // or your state variable
+               userId: localStorage.getItem("userId")  
             }
          });
 
