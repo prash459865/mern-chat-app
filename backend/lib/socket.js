@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://mern-chat-app-r0lj.onrender.com', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -17,7 +17,7 @@ app.use(cors({
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", 
+    origin: "https://mern-chat-app-r0lj.onrender.com", 
     methods: ["GET", "POST","PUT","DELETE"],
     credentials: true
   }
@@ -34,10 +34,9 @@ io.on("connection", (socket) => {
   if (userId) onlineUserId[userId] = socket.id;
   console.log(onlineUserId, "object of all ids from backend");
 
-  // 🔴 BROADCAST online users to all clients
+  
   io.emit('AllOnlineUSers', Object.keys(onlineUserId));
 
-  // ✅ LISTEN for message sent from client
   socket.on("send_message", (data) => {
     const { recieverId } = data;
     const receiverSocketId = onlineUserId[recieverId];
@@ -47,7 +46,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // 🧹 On disconnect, clean up user
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
     delete onlineUserId[userId];

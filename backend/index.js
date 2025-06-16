@@ -18,3 +18,7 @@ server.listen(PORT, async () => {
   console.log(`Server running on port ${PORT}`);
   await connectDB(process.env.MONGODB_URL);
 });
+
+//https://mern-chat-app-r0lj.onrender.com
+
+// https://mern-chat-app-frontend-g2uc.onrender.com
