@@ -9,7 +9,7 @@ const server = http.createServer(app);
 
 
 app.use(cors({
-  origin: 'https://mern-chat-app-r0lj.onrender.com', 
+  origin: 'https://mern-chat-app-frontend-g2uc.onrender.com', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -17,7 +17,7 @@ app.use(cors({
 
 const io = new Server(server, {
   cors: {
-    origin: "https://mern-chat-app-r0lj.onrender.com", 
+    origin: "https://mern-chat-app-frontend-g2uc.onrender.com", 
     methods: ["GET", "POST","PUT","DELETE"],
     credentials: true
   }
