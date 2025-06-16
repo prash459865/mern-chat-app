@@ -1,0 +1,9 @@
+.mainpage-container{
+    position: relative;
+    display: flex;
+    font-size: 1.6rem;
+    height: 90vh;
+    max-width: 100%;
+    border-top: 1px dashed black;
+    
+}

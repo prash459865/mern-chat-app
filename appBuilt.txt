@@ -1,0 +1,171 @@
+created two folders Frontend and backend
+
+In frontend -> npm create vite@latest
+In backend
+  npm init -y
+  now install some dependencies -> npm i express mongoose dotenv jsonwebtoken bcryptjs cookie-parser cloudinary socket.io
+                                -> npm i nodemon -D 
+
+  in package.json -> in scripts -> "dev" : "nodemon index.js"  // used this in development time
+                                -> "start" : "node index.js"  // used this in production time
+
+            and below author use "Type" : "module",
+
+=======================================================================
+
+create index.js 
+
+import express from "express";
+const app = express();
+
+app.listen(5001, ()=>{
+    console.log("server started")
+})
+
+=======================================================================
+
+now create some folders named Controllers, Routes, Models, Middlewares, Lib
+
+=======================================================================
+now in index.js , just before app.listen
+   app.use('/auth',authRoutes);
+
+now in routes folder -> ctrete authRoute.js file
+now in authRoute.js
+   we only name the api but deine the api under controllers like authControllers.js  and import it in authRoute.js
+
+use example in authController.js 
+   export const signUp =(req,res)=>{.....};
+
+=======================================================================
+
+now create a database 
+  * in .env store string 
+  * now in index.js -> import dotenv from "dotenv"
+                    -> dotenv.config();
+  * now we can use by process.env.PORT or any variable defined in .env
+  * we create a file named ConnectDB.js 
+         import mongoose from "mongoose";
+
+      export const connectDB = async(uri) =>{
+          try {
+             await mongoose.connect(uri);
+             console.log("Database connected");
+               } catch (error) {
+              console.log("error in connecting database",error);
+        
+              }
+           }
+  * now use this ConnectDB inside app.listen of index.js
+=======================================================================
+
+for hash the password
+
+   import brcrypt from "bcryptjs"
+
+   const salt = await bcrypt.gensalt(10);
+   const hashedPassword  = await bcrypt.hash(password, salt);
+
+=======================================================================
+
+for token generation for authorization
+   * create JWT_SECRET in .env file
+   * create a file name generateToken.js
+        import jwt from "jsonwebtoken";
+        const generateToken = () =>{
+            const token  = jwt.sign({userId}, process.env.JWT_SECRET, {expiresIn : "2d"});
+
+            res.cookie("jwt", token , {
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                httpOnly:true,
+                sameSite:"strict",
+                secure : process.env.NODE_ENV !== "development"
+            })
+
+            return token;
+        }
+======================================================================
+
+for logout we delete that cookie where JWT is stored.
+  res.clearCookie("token");
+
+=====================================================================
+
+for protecting routes 
+  * since it will used as middleware so file name will be authMiddleware.js
+  * In order to get token for authentication we will access token from cookie here by using cookieParser 
+  * so in index.js 
+     import cookieParser from "cookie-parser"
+     and at the top of every routes write app.use(cookieParser());  //this will parse the data inside cookie 
+     
+  * now we can get token by writing const usedToken = req.cookies.token  // here token is the name of cookie and can be any name.
+  * now we will extract that userId which was used to create token 
+  * to get userId
+      const decode = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decode.userId // same name was used for create token 
+  * now we can check this userId in DB and if exists we will get data and do next() for another function call.
+
+ ============================================================================================
+                                     upload files in cloudinary fom node.j
+
+   frontend
+
+     const [image, setImage] = useState('');
+     
+1.) to pick up image use <input type = 'file' onchange((e)=>setImage(e.target.files[0]))/> 
+    to show the picked image <img src={URL.createObjectURL(image)}/>
+
+2.)to send image/file use FormData() instead of useState() as it accepts any time of file like image,video,pdf, etc.
+
+    const formData = new FormData()
+    formData.append('image',image);
+    send via axios or fetch
+    
+   Backend
+
+1.) npm i multer cloudinary
+
+2.) In lib -> cloudinary.js
+         import {v2 as cloudinary} from 'cloudinary';
+         import dotenv from 'dotenv'
+
+         dotenv.config();
+
+         cloudinary.config({
+               cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+               api_key: process.env.CLOUDINARY_API_KEY,
+               api_secret: process.env.CLOUDINARY_API_SECRET
+         });
+
+         export default cloudinary;
+
+3.) create multer.js in middleware 
+     import multer from multer
+
+     const storage = multer.memoryStorage();
+     const upload = multer({storage})
+
+     export default uplaod 
+     // this will be used as middleware for image upload routes.
+
+4.) now in route
+   
+    import upload from "multer.js"
+
+    router.post('/upload-image',protectedRoute,upload.single('name of key of image from formData',uploadImage))
+
+5.) other details than 'image'(sent in route) can be accessed normally from req.body;
+
+    //for access image use req.file.buffer;
+
+    const filebuffer = req.file.buffer
+    const base64Image = `data:${req.file.mimetype};base64,${fileBuffer.toString('base64')}`;
+     
+    const uploadedResponse = await cloudinary.uploader.upload(base64Image, {
+                folder: 'media',
+                resource_type: 'auto',
+            });
+
+   const imageURL = uploadedResponse.secure_url || '';
+
+  save imageURL where ever we want 

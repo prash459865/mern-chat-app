@@ -1,0 +1,10 @@
+
+html {
+  font-size: 10px;
+}
+*{
+  margin:0;
+  padding:0px 1rem;
+  box-sizing:border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

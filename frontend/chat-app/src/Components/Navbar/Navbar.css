@@ -1,0 +1,48 @@
+.navbar-container {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.navbar-container .right-items {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.right-items div:hover {
+  color: blue;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    font-size: 1.6rem;
+    height: 10%;
+  }
+
+  .navbar-container .right-items {
+    width: 100%;
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
+
+  .right-items div:hover {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    font-size: 1.4rem;
+  }
+
+  .right-items div:hover {
+    font-size: 1.6rem;
+  }
+}
