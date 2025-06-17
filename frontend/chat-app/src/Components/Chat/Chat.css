@@ -68,7 +68,9 @@
   border-radius: 1rem;
   border: 1px solid #ccc;
 }
-
+.send-logo{
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .chat-container {
     width: 100%;
