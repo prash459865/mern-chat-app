@@ -1,6 +1,6 @@
 This is a real time chat application using MERN stack.
 
-------------------------------------------------working of app----------------------------------------00-----------------------
+------------------------------------------------working of app-----------------------------------------------------------------
 
 step-1: If you don't have account then click on Register on signup,then click on login with correct details.
 
